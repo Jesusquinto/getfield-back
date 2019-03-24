@@ -11,7 +11,6 @@ class Cancha extends Model implements AuthenticatableContract, AuthorizableContr
 {
 
     protected $table = 'canchas';
-    protected $primaryKey = 'id';
 
     use Authenticatable, Authorizable;
 
@@ -21,9 +20,9 @@ class Cancha extends Model implements AuthenticatableContract, AuthorizableContr
     protected $hidden = [
     ];
 
-    /*public function establecimientos()
+    public function establecimientos()
     {
-    	return $this->belongsTo('establecimientos','id');
-    }*/
+    	return $this->hasOne(Establecimiento::class);
+    }
 
 }

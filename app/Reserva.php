@@ -24,12 +24,12 @@ class Reserva extends Model implements AuthenticatableContract, AuthorizableCont
 
     public function usuario()
     {
-    	return $this->hasMany(Usuario::class);
+    	return $this->hasOne(Usuario::class);
     }
 
     public function cancha()
     {
-    	return $this->hasMany(Cancha::class);
+    	return $this->hasOne(Cancha::class);
     }
 
 }

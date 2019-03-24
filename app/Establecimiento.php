@@ -23,9 +23,9 @@ class Establecimiento extends Model implements AuthenticatableContract, Authoriz
         'password'
     ];
 
-    /*public function canchas()
+    public function canchas()
     {
-    	return $this->hasMany('canchas','id');
-    }*/
+    	return $this->hasMany(Cancha::class);
+    }
 
 }

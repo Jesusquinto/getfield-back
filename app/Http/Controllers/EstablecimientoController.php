@@ -7,13 +7,13 @@ class EstablecimientoController extends Controller
 {
 	 //metodo listar todas los establecimientos
      function get_establecimientos(){
-        $establecimiento = Establecimiento::all();
+        $establecimiento = Establecimiento::with(['canchas'])->get();
         return response()->json($establecimiento);
      }
 
      //metodo listar establecimiento por id
      function get_establecimiento_by_id($id){
-        $establecimiento = Establecimiento::find($id);
+        $establecimiento = Establecimiento::with(['canchas'])->where('id',$id)->get();
         return response()->json($establecimiento);
      }
 
