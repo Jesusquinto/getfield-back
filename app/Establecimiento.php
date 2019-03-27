@@ -22,7 +22,7 @@ class Establecimiento extends Model implements AuthenticatableContract, Authoriz
     protected $hidden = [
         'password','user',"fecha_creacion"
     ];
-
+    //Un establecimiento tiene muchas canchas
     public function canchas()
     {
     	return $this->hasMany(Cancha::class);

@@ -20,9 +20,20 @@ class Cancha extends Model implements AuthenticatableContract, AuthorizableContr
     protected $hidden = [
     ];
 
-    public function Establecimiento()
+
+    //Una cancha pertenece a un establecimiento
+    public function establecimiento()
     {
     	return $this->belongsTo(Establecimiento::class);
     }
+
+
+    //Una cancha tiene varias reservas
+    public function reserva()
+    {
+    	return $this->hasMany(Reserva::class);
+    }
+   
+
 
 }

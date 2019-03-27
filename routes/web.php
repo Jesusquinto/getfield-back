@@ -37,3 +37,6 @@ $router->post('canchas',  [ 'uses' => 'CanchasController@create_cancha']);
 $router->get('reservas',  [ 'uses' => 'ReservasController@get_reservas']);
 //@get reservas
 $router->get('reservas/{id}',  [ 'uses' => 'ReservasController@get_reserva_by_id']);
+//
+$router->post('reservas',  [ 'uses' => 'ReservasController@crear_reserva']);
+

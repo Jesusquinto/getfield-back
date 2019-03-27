@@ -22,5 +22,10 @@ class Usuario extends Model implements AuthenticatableContract, AuthorizableCont
         'password'
 
     ];
+    //Un usuario tiene varias reservas
+    public function Reserva()
+    {
+    	return $this->hasMany(Reserva::class);
+    }
 
 }

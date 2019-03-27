@@ -22,14 +22,19 @@ class Reserva extends Model implements AuthenticatableContract, AuthorizableCont
 
     ];
 
-    public function usuario()
-    {
-    	return $this->hasOne(Usuario::class);
-    }
-
+   //Una reserva pertenece a una cancha
     public function cancha()
     {
-    	return $this->hasOne(Cancha::class);
+    	return $this->belongsTo(Cancha::class);
     }
+
+    //Una reserva pertenece a un usuario
+    public function usuario()
+    {
+    	return $this->belongsTo(Usuario::class);
+    }
+
+
+
 
 }
