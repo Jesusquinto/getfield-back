@@ -23,7 +23,7 @@ $router->get('establecimientos',  [ 'uses' => 'EstablecimientoController@get_est
 $router->get('establecimientos/{id}',  [ 'uses' => 'EstablecimientoController@get_establecimiento_by_id']);
 //@post crear establecimiento
 $router->post('establecimientos',  [ 'uses' => 'EstablecimientoController@crear_establecimiento']);
-//@put crear establecimiento
+//@put actualizar establecimiento
 $router->put('establecimientos',  [ 'uses' => 'EstablecimientoController@actualizar_establecimiento']);
 
 //@get canchas

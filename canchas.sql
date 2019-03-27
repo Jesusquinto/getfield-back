@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-03-2019 a las 23:04:09
+-- Tiempo de generación: 27-03-2019 a las 06:57:43
 -- Versión del servidor: 10.1.38-MariaDB
 -- Versión de PHP: 7.3.2
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `canchas` (
   `id` int(11) NOT NULL,
-  `id_establecimiento` int(11) NOT NULL,
+  `establecimiento_id` int(11) NOT NULL,
   `dimensiones` text NOT NULL,
   `nombre` text NOT NULL,
   `imagen` text NOT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE `canchas` (
 -- Volcado de datos para la tabla `canchas`
 --
 
-INSERT INTO `canchas` (`id`, `id_establecimiento`, `dimensiones`, `nombre`, `imagen`, `descripcion`, `estado`, `parametros`, `valor_x_minuto`) VALUES
+INSERT INTO `canchas` (`id`, `establecimiento_id`, `dimensiones`, `nombre`, `imagen`, `descripcion`, `estado`, `parametros`, `valor_x_minuto`) VALUES
 (1, 1, '50x50', 'la macarena', 'img001.png', 'esta cancha esta en funcionamiento', '0', 'lolo', 100),
 (2, 1, '60x60', 'la gran cancha', 'img007.png', 'esta cancha esta en funcionamiento', '0', 'mjmj', 150);
 
@@ -64,17 +64,16 @@ CREATE TABLE `establecimientos` (
   `fecha_creacion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `user` varchar(50) NOT NULL,
   `password` varchar(65) NOT NULL,
-  `valoracion` int(11) NOT NULL,
-  `cancha_id` int(11) NOT NULL
+  `valoracion` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `establecimientos`
 --
 
-INSERT INTO `establecimientos` (`id`, `nombre`, `descripcion`, `logo_img`, `estado`, `horario`, `fecha_creacion`, `user`, `password`, `valoracion`, `cancha_id`) VALUES
-(1, 'la bonbonera', 'esta cancha esta en mantenimiento', 'img_01.pmg', '0', 'dos', '2019-03-24 20:16:48', 'usuario', '123', 10, 1),
-(2, 'tres canchas', 'esta cancha esta en buen estado', 'img_03.pmg', '0', 'tres', '2019-03-24 20:17:05', 'usuario2', '358', 10, 2);
+INSERT INTO `establecimientos` (`id`, `nombre`, `descripcion`, `logo_img`, `estado`, `horario`, `fecha_creacion`, `user`, `password`, `valoracion`) VALUES
+(1, 'la bonbonera', '', 'img_01.pmg', '0', 'dos', '2019-03-27 04:38:18', 'usuario', '123', 10),
+(2, 'tres canchas', '', 'img_03.pmg', '0', 'tres', '2019-03-27 04:37:54', 'usuario2', '358', 10);
 
 -- --------------------------------------------------------
 
@@ -132,7 +131,7 @@ INSERT INTO `usuario` (`id`, `nombre`, `apellido`, `usuario`, `pass`, `estado`, 
 --
 ALTER TABLE `canchas`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `id_establecimiento` (`id_establecimiento`);
+  ADD KEY `id_establecimiento` (`establecimiento_id`);
 
 --
 -- Indices de la tabla `establecimientos`
@@ -190,7 +189,7 @@ ALTER TABLE `usuario`
 -- Filtros para la tabla `canchas`
 --
 ALTER TABLE `canchas`
-  ADD CONSTRAINT `canchas_ibfk_1` FOREIGN KEY (`id_establecimiento`) REFERENCES `establecimientos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `canchas_ibfk_1` FOREIGN KEY (`establecimiento_id`) REFERENCES `establecimientos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `reservas`

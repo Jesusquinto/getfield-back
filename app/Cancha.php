@@ -15,14 +15,14 @@ class Cancha extends Model implements AuthenticatableContract, AuthorizableContr
     use Authenticatable, Authorizable;
 
     protected $fillable = [
-        'id','id_establecimiento','dimensiones','nombre','imagen','descripcion','estado','parametros','valor_x_minuto'
+        'id','establecimiento_id','dimensiones','nombre','imagen','descripcion','estado','parametros','valor_x_minuto'
             ];
     protected $hidden = [
     ];
 
-    public function establecimientos()
+    public function Establecimiento()
     {
-    	return $this->hasOne(Establecimiento::class);
+    	return $this->belongsTo(Establecimiento::class);
     }
 
 }

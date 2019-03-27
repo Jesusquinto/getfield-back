@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Establecimiento;
+use App\Cancha;
 
 class EstablecimientoController extends Controller
 {

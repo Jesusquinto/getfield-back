@@ -17,10 +17,10 @@ class Establecimiento extends Model implements AuthenticatableContract, Authoriz
     use Authenticatable, Authorizable;
 
     protected $fillable = [
-        'nombre','descripcion','estado','horario','user','password','valoracion'
+      'id', 'nombre','descripcion','estado','horario','user','password','valoracion', "fecha_creacion"
             ];
     protected $hidden = [
-        'password'
+        'password','user',"fecha_creacion"
     ];
 
     public function canchas()
