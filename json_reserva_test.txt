@@ -1,0 +1,9 @@
+{"id": 1,
+        "usuario_id": 4,
+        "cancha_id": 1,
+        "horario": {"horainicial": "2019-03-17 13:00", "horafinal": "2019-03-28 13:45:00"},
+        "estado": "A",
+        "metodo_pago": "PAYPAL",
+        "valor_a_pagar": 35000,
+        "fecha_reserva": "2019-03-27 19:47:01",
+        "fecha_cancelada": "2019-03-27 19:47:01"}
