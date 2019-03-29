@@ -10,13 +10,14 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
 class Reserva extends Model implements AuthenticatableContract, AuthorizableContract
 {
+    
 
     protected $table = 'reservas';
 
     use Authenticatable, Authorizable;
 
     protected $fillable = [
-        'id','id_usuario','id_cancha','horario','estado','metodo_pago','valor_a_pagar','fecha_reserva','fecha_cancelada'
+        'usuario_id','cancha_id','horario','estado','metodo_pago','valor_a_pagar'
             ];
     protected $hidden = [
 

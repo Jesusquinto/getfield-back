@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-03-2019 a las 06:57:43
+-- Tiempo de generación: 29-03-2019 a las 08:01:29
 -- Versión del servidor: 10.1.38-MariaDB
 -- Versión de PHP: 7.3.2
 
@@ -72,8 +72,8 @@ CREATE TABLE `establecimientos` (
 --
 
 INSERT INTO `establecimientos` (`id`, `nombre`, `descripcion`, `logo_img`, `estado`, `horario`, `fecha_creacion`, `user`, `password`, `valoracion`) VALUES
-(1, 'la bonbonera', '', 'img_01.pmg', '0', 'dos', '2019-03-27 04:38:18', 'usuario', '123', 10),
-(2, 'tres canchas', '', 'img_03.pmg', '0', 'tres', '2019-03-27 04:37:54', 'usuario2', '358', 10);
+(1, 'la bonbonera', '', 'img_01.pmg', '0', '{\r\n		\"dias\": [\"Monday\",\"Tuesday\", \"Wenesday\",\"Thursday\",\"Friday\"],\r\n		\"horarios\": {\"horainicial\": \"07:00\", \"horafinal\": \"22:30\"}\r\n \r\n}', '2019-03-29 00:45:33', 'usuario', '123', 10),
+(2, 'tres canchas', '', 'img_03.pmg', '0', '{\r\n		\"dias\": [\"Monday\",\"Tuesday\", \"Wenesday\",\"Thursday\",\"Friday\"],\r\n		\"horarios\": {\"horainicial\": \"07:00\", \"horafinal\": \"22:30\"}\r\n \r\n}', '2019-03-29 07:01:02', 'usuario2', '358', 10);
 
 -- --------------------------------------------------------
 
@@ -83,15 +83,26 @@ INSERT INTO `establecimientos` (`id`, `nombre`, `descripcion`, `logo_img`, `esta
 
 CREATE TABLE `reservas` (
   `id` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
-  `id_cancha` int(11) NOT NULL,
-  `horario` text NOT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `cancha_id` int(11) NOT NULL,
+  `horario` varchar(200) NOT NULL,
   `estado` text NOT NULL,
   `metodo_pago` text NOT NULL,
   `valor_a_pagar` int(11) NOT NULL,
-  `fecha_reserva` datetime NOT NULL,
-  `fecha_cancelada` datetime NOT NULL
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `fecha_cancelada` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `reservas`
+--
+
+INSERT INTO `reservas` (`id`, `usuario_id`, `cancha_id`, `horario`, `estado`, `metodo_pago`, `valor_a_pagar`, `created_at`, `updated_at`, `fecha_cancelada`) VALUES
+(1, 4, 1, ' {\"horainicial\": \"2019-03-28 14:38:00\", \"horafinal\": \"2019-03-28 15:38:00\"}', 'A', 'PAYPAL', 35000, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2019-03-27 19:47:01'),
+(10, 4, 1, '{\"horainicial\": \"2019-03-27 21:38:00\", \"horafinal\": \"2019-03-27 22:38:00\"}', 'A', 'PAYPAL', 45000, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(12, 4, 1, '{\"horainicial\":\"2019-04-01 15:00\",\"horafinal\":\"2019-04-01 22:00:00\"}', 'A', 'PAYPAL', 35000, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2019-03-29 06:52:51'),
+(14, 4, 1, '{\"horainicial\":\"2019-04-02 15:00\",\"horafinal\":\"2019-04-02 22:00:00\"}', 'A', 'PAYPAL', 35000, '2019-03-29 01:58:47', '2019-03-29 01:58:47', NULL);
 
 -- --------------------------------------------------------
 
@@ -144,8 +155,8 @@ ALTER TABLE `establecimientos`
 --
 ALTER TABLE `reservas`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `id_cancha` (`id_cancha`),
-  ADD KEY `id_usuario` (`id_usuario`);
+  ADD KEY `id_cancha` (`cancha_id`),
+  ADD KEY `id_usuario` (`usuario_id`);
 
 --
 -- Indices de la tabla `usuario`
@@ -173,7 +184,7 @@ ALTER TABLE `establecimientos`
 -- AUTO_INCREMENT de la tabla `reservas`
 --
 ALTER TABLE `reservas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
@@ -195,8 +206,8 @@ ALTER TABLE `canchas`
 -- Filtros para la tabla `reservas`
 --
 ALTER TABLE `reservas`
-  ADD CONSTRAINT `reservas_ibfk_1` FOREIGN KEY (`id_cancha`) REFERENCES `canchas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `reservas_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `reservas_ibfk_1` FOREIGN KEY (`cancha_id`) REFERENCES `canchas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `reservas_ibfk_2` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

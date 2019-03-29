@@ -21,7 +21,7 @@ class CanchasController extends Controller
      //metodo listar canchas con establecimiento por id
      function get_cancha_by_id($id)
      {
-     	$canchas = Cancha::with(['establecimiento'])->where('id_establecimiento',$id)->get();
+     	$canchas = Cancha::with(['establecimiento'])->where('id',$id)->get();
      	return response()->json($canchas);
      }
 
