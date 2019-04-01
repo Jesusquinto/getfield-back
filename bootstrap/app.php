@@ -25,6 +25,10 @@ $app = new Laravel\Lumen\Application(
  $app->withFacades();
 
  $app->withEloquent();
+ $app->withFacades(
+    true,
+    [Laravel\Socialite\Facades\Socialite::class => 'Socialite']
+);
 
 /*
 |--------------------------------------------------------------------------
@@ -76,6 +80,8 @@ $app->routeMiddleware([
 | totally optional, so you are not required to uncomment this line.
 |
 */
+$app->register(Laravel\Socialite\SocialiteServiceProvider::class);
+
 
 $app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
@@ -91,6 +97,9 @@ $app->register(App\Providers\AppServiceProvider::class);
 | can respond to, as well as the controllers that may handle them.
 |
 */
+
+$app->configure('services');
+
 
 $app->router->group([
     'namespace' => 'App\Http\Controllers',

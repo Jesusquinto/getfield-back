@@ -52,3 +52,6 @@ $router->group(['middleware'=>'auth:api'],function($router){
 
 
 });
+
+$router->get('auth/login', 'googleAuthController@redirectToProvider');
+$router->post('auth/login/callback', 'googleAuthController@handleProviderCallback');
