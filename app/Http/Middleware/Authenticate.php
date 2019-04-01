@@ -5,6 +5,9 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Contracts\Auth\Factory as Auth;
 
+    use Exception;
+    use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
+    use Tymon\JWTAuth\Facades\JWTAuth;
 class Authenticate
 {
     /**
@@ -33,12 +36,22 @@ class Authenticate
      * @param  string|null  $guard
      * @return mixed
      */
-    public function handle($request, Closure $next, $guard = null)
+    public function handle($request, Closure $next)
     {
-        if ($this->auth->guard($guard)->guest()) {
-            return response('Unauthorized.', 401);
-        }
+        
+        try {
 
+           $user = JWTAuth::parseToken()->authenticate($request); 
+
+        }catch(Exception $e) {
+            return response()->json([
+                'error' => [
+                   'title'=> 'Error de sesión',
+                    'code' => 401,
+                    'message' => "La sesión ha expirado o es invalida, por favor inicie sesión nuevamente",
+                ]
+                ], 401);
+          } 
         return $next($request);
     }
 }

@@ -9,7 +9,7 @@ $router->get('saludo', function(){
 //$router->get('productos',  [ 'uses' => 'ProductosController@get_productos']);
 
 //@get usuarios
-$router->get('usuarios',  [ 'uses' => 'UsuarioController@get_usuarios']);
+//$router->get('usuarios',  [ 'uses' => 'UsuarioController@get_usuarios']);
 //@get usuarios
 $router->get('usuarios/{id}',  [ 'uses' => 'UsuarioController@get_usuario_by_id']);
 //@post usuarios
@@ -40,3 +40,15 @@ $router->get('reservas/{id}',  [ 'uses' => 'ReservasController@get_reserva_by_id
 //
 $router->post('reservas',  [ 'uses' => 'ReservasController@crear_reserva']);
 
+
+
+//LOGIN
+$router->post('/login', 'ExampleController@postLogin');
+
+
+$router->group(['middleware'=>'auth:api'],function($router){
+    $router->get('usuario',  [ 'uses' => 'UsuarioController@get_usuario']);
+
+
+
+});

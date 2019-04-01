@@ -7,21 +7,35 @@ use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class Usuario extends Model implements AuthenticatableContract, AuthorizableContract
+
+class Usuario extends Model implements JWTSubject, AuthenticatableContract, AuthorizableContract
 {
-
+    use Authenticatable, Authorizable;
     protected $table = 'usuario';
 
     use Authenticatable, Authorizable;
 
     protected $fillable = [
-        'nombre','password'
+        'id','nombre','apellido','usuario','estado','email','password'
             ];
     protected $hidden = [
         'password'
 
     ];
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+
     //Un usuario tiene varias reservas
     public function Reserva()
     {
