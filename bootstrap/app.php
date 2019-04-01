@@ -98,7 +98,7 @@ $app->register(App\Providers\AppServiceProvider::class);
 |
 */
 
-$app->configure('services');
+$app->configure('config\services.php');
 
 
 $app->router->group([

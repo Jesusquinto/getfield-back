@@ -36,11 +36,13 @@ class googleAuthController extends Controller
      */
     public function handleProviderCallback(Request $request)
     {
+        echo $request->code;
+       $lel = json_encode($request);
+       echo $lel; 
+
+      
         // this user we get back is not our user model, but a special user object that has all the information we need
-        $providerUser = Socialite::with([
-            'client_id' => '938990935440-isfmhu1s5mii7g8q893ihvu9broo1h8o.apps.googleusercontent.com',
-            'client_secret' => 'nf89mNcLForptVzb7uoQjGAp'
-        ])->getAccessTokenResponse($request->code);
+        $providerUser = Socialite::with('google')->getAccessTokenResponse($request);
        
         return new JsonResponse(
             [
