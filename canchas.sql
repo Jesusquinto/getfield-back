@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-03-2019 a las 08:01:29
+-- Tiempo de generación: 02-04-2019 a las 09:33:09
 -- Versión del servidor: 10.1.38-MariaDB
 -- Versión de PHP: 7.3.2
 
@@ -107,6 +107,41 @@ INSERT INTO `reservas` (`id`, `usuario_id`, `cancha_id`, `horario`, `estado`, `m
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `roles`
+--
+
+CREATE TABLE `roles` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(25) NOT NULL,
+  `descripcion` text
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `roles`
+--
+
+INSERT INTO `roles` (`id`, `nombre`, `descripcion`) VALUES
+(1, 'SUPER ADMIN', NULL),
+(2, 'ADMIN', NULL),
+(3, 'USER', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tarifas`
+--
+
+CREATE TABLE `tarifas` (
+  `id` int(11) NOT NULL,
+  `establecimiento_id` int(11) NOT NULL,
+  `parametros` text NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `usuario`
 --
 
@@ -115,23 +150,23 @@ CREATE TABLE `usuario` (
   `nombre` text NOT NULL,
   `apellido` text NOT NULL,
   `usuario` text NOT NULL,
-  `pass` text NOT NULL,
+  `password` text,
   `estado` text NOT NULL,
-  `email` text NOT NULL,
-  `fecha_creacion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `email` varchar(255) NOT NULL,
+  `imagen` text NOT NULL,
+  `rol_id` int(11) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`id`, `nombre`, `apellido`, `usuario`, `pass`, `estado`, `email`, `fecha_creacion`) VALUES
-(4, 'juancho', 'suan', 'juanchito', '4567o9', '1', 'juanch@gmail.com', '2019-03-19 03:36:13'),
-(5, 'maria', 'perez', 'mary', '526341', '0', 'maria@gmail.com', '2019-03-19 03:37:51'),
-(6, 'pepe', 'fernandez', 'pep', '45129636', '1', 'pepe@gmail.com', '2019-03-19 03:44:00'),
-(7, 'lucia', 'martinez', 'lucy', '457831', '1', 'lucia@gmail.com', '2019-03-19 03:44:00'),
-(8, 'fernando', 'vargas', 'fer', '36367896', '0', 'fernando@gmail.com', '2019-03-19 03:44:00'),
-(9, 'pedro', 'suarez', 'pedrito', '14251425', '0', 'pedro@gmail.com', '2019-03-19 03:44:00');
+INSERT INTO `usuario` (`id`, `nombre`, `apellido`, `usuario`, `password`, `estado`, `email`, `imagen`, `rol_id`, `created_at`, `updated_at`) VALUES
+(4, 'juancho', 'suan', 'juanchito', '$2y$10$NJ7IHAe8cetfpxKdZL5QbemB.6G8vl5jr9HeKlups8BkpPI9zmoY2', 'A', 'juanch@gmail.com', '', 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(11, 'Juan', 'Rosales', 'RosaAn', '$2y$10$NJ7IHAe8cetfpxKdZL5QbemB.6G8vl5jr9HeKlups8BkpPI9zmoY2', 'A', 'rosan@lol.com', '', 3, '2019-03-30 00:40:55', '2019-03-30 00:40:55'),
+(35, 'Jesus', 'Quinto', 'iditroyer5', NULL, 'A', 'iditroyer5@gmail.com', 'https://lh3.googleusercontent.com/-qLQC-aoF0Mk/AAAAAAAAAAI/AAAAAAAAACI/3FNkaLtdKeU/photo.jpg', 3, '2019-04-02 01:21:22', '2019-04-02 01:21:22');
 
 --
 -- Índices para tablas volcadas
@@ -159,10 +194,24 @@ ALTER TABLE `reservas`
   ADD KEY `id_usuario` (`usuario_id`);
 
 --
+-- Indices de la tabla `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `tarifas`
+--
+ALTER TABLE `tarifas`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD KEY `rol_id` (`rol_id`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -187,10 +236,22 @@ ALTER TABLE `reservas`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
+-- AUTO_INCREMENT de la tabla `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `tarifas`
+--
+ALTER TABLE `tarifas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- Restricciones para tablas volcadas
@@ -208,6 +269,12 @@ ALTER TABLE `canchas`
 ALTER TABLE `reservas`
   ADD CONSTRAINT `reservas_ibfk_1` FOREIGN KEY (`cancha_id`) REFERENCES `canchas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `reservas_ibfk_2` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`rol_id`) REFERENCES `roles` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -43,15 +43,16 @@ $router->post('reservas',  [ 'uses' => 'ReservasController@crear_reserva']);
 
 
 //LOGIN
-$router->post('/login', 'ExampleController@postLogin');
+$router->post('/login', 'JwtAuthController@Login');
 
 
 $router->group(['middleware'=>'auth:api'],function($router){
     $router->get('usuario',  [ 'uses' => 'UsuarioController@get_usuario']);
-
+    
 
 
 });
 
-$router->get('auth/login', 'googleAuthController@redirectToProvider');
-$router->post('auth/login/callback', 'googleAuthController@handleProviderCallback');
+
+$router->post('googlesingup', 'googleAuthController@googleSingUp');
+$router->post('googlesingin', 'googleAuthController@googleSingIn');

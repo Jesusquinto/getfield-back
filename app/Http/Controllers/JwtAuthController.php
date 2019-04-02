@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\usuario;
 use Illuminate\Support\Facades\Auth;
 
-class ExampleController extends Controller
+class JwtAuthController extends Controller
 {
     /**
      * @var \Tymon\JWTAuth\JWTAuth
@@ -30,8 +30,10 @@ class ExampleController extends Controller
 
 
 
+    
 
-    public function postLogin(Request $request)
+
+    public function Login(Request $request)
     {
         $this->validate($request, [
             'email'    => 'required|email|max:255',
