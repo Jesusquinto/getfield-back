@@ -61,7 +61,13 @@ class googleAuthController extends Controller
                 ]
                 ], 400);
         }
-        return $this->createToken($socialUser->email);
+    
+        return response()->json(['token' => $this->createToken($socialUser->email)->original,'success' => [
+            'title'=> 'Genial!',
+             'code' => 201,
+             'message' => "Bienvenid@ ".$request->givenName,
+         ]
+         ], 201);
 
  }
     
@@ -98,7 +104,6 @@ class googleAuthController extends Controller
              if (!$token = $this->jwt->fromUser($user)) {
                  return response()->json(['user_not_found'], 404);
              } 
-             echo $token;
          }catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
              return response()->json(['token_expired'], 500);
          } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
