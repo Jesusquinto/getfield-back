@@ -25,6 +25,7 @@ class CanchasController extends Controller
      	return response()->json($canchas);
      }
 
+
      //metodo listar canchas con establecimiento por id
      function crear_cancha(Request $request)
      {

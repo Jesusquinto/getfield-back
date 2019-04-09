@@ -27,5 +27,11 @@ class Establecimiento extends Model implements AuthenticatableContract, Authoriz
     {
     	return $this->hasMany(Cancha::class);
     }
+    //Un establecimiento tiene muchas reservas
+    public function reservas()
+    {
+        return $this->hasMany(Reserva::class);
+    }
+
 
 }

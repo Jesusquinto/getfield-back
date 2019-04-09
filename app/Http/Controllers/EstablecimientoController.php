@@ -31,5 +31,9 @@ class EstablecimientoController extends Controller
         $establecimiento->update($request->all());
         return response()->json($establecimiento, 200);
      }
+     
+    
+
+
 
 }

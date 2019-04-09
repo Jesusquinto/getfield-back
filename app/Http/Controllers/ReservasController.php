@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Http\Controllers\EstablecimientoController;
 use App\Http\Controllers\CanchasController;
-
+use Illuminate\Support\Facades\DB;
 
 class ReservasController extends Controller
 {
@@ -34,8 +34,51 @@ class ReservasController extends Controller
      	$reservas = Reserva::with(['usuario','cancha'])->where('id',$id)->get();
      	return response()->json($reservas);
      }
+      //---@@metodo listar reservas activas-------------------
+     function get_reservas_activas()
+     {
+      $reservas = Reserva::with(['usuario', 'cancha', 'establecimiento'])->where('estado','A')->get();
+      return response()->json($reservas);
+     }
+      //---@@metodo listar reservas inactivas-------------------
+      function get_reservas_inactivas()
+      {
+       $reservas = Reserva::with(['usuario', 'cancha', 'establecimiento'])->where('estado',' IN')->get();
+       return response()->json($reservas);
+      }
+     //---@@metodo listar reservas Activas por establecimiento-------------------
+     function get_reservas_activas_by_establecimiento($establecimiento_id)
+     {
+        $reservas = Reserva::with(['usuario','cancha','establecimiento'])->where('establecimiento_id',$establecimiento_id)->where('estado','A')->get();
+        return response()->json($reservas);
+     }
+
+     //---@@metodo listar reservas inactivas por establecimiento-------------------
+     function get_reservas_inactivas_by_establecimiento($establecimiento_id)
+     {
+        $reservas = Reserva::with(['usuario','cancha','establecimiento'])->where('establecimiento_id',$establecimiento_id)->where('estado','IN')->get();
+        return response()->json($reservas);
+     }
 
 
+
+     function get_canchas_mas_reservadas(){
+
+      $canchas = DB::select("SELECT * ,COUNT( * ) AS veces
+		FROM reservas 
+		GROUP BY cancha_id
+		HAVING veces = ( 
+		SELECT COUNT( * ) maximo
+		FROM reservas
+		GROUP BY cancha_id
+		ORDER BY maximo DESC 
+		LIMIT 1 )")->get();
+      DD($canchas);
+     return response()->json($canchas);
+
+
+
+     }
 
 
 

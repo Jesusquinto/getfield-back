@@ -17,7 +17,7 @@ class Reserva extends Model implements AuthenticatableContract, AuthorizableCont
     use Authenticatable, Authorizable;
 
     protected $fillable = [
-        'usuario_id','cancha_id','horario','estado','metodo_pago','valor_a_pagar'
+        'usuario_id','cancha_id','establecimiento_id','horario','estado','metodo_pago','valor_a_pagar'
             ];
     protected $hidden = [
 
@@ -28,6 +28,15 @@ class Reserva extends Model implements AuthenticatableContract, AuthorizableCont
     {
     	return $this->belongsTo(Cancha::class);
     }
+
+
+    //Una reserva pertenece a un establecimiento
+    public function establecimiento()
+    {
+        return $this->belongsTo(Establecimiento::class);
+
+    }
+
 
     //Una reserva pertenece a un usuario
     public function usuario()

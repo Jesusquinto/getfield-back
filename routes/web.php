@@ -39,8 +39,17 @@ $router->get('reservas',  [ 'uses' => 'ReservasController@get_reservas']);
 $router->get('reservas/{id}',  [ 'uses' => 'ReservasController@get_reserva_by_id']);
 //
 $router->post('reservas',  [ 'uses' => 'ReservasController@crear_reserva']);
+//@get reservas activas por establecimiento
+$router->get('reservasAEstablecimiento/{establecimiento_id}', ['uses' => 'ReservasController@get_reservas_activas_by_establecimiento']);
+//@get reservas inactivas por establecimiento
+$router->get('reservasINEstablecimiento/{establecimiento_id}', ['uses' => 'ReservasController@get_reservas_inactivas_by_establecimiento']);
 
+//@get reservas activas
+$router->get('reservasActivas', ['uses' => 'ReservasController@get_reservas_activas']);
+//@get reservas inactivas
+$router->get('reservasInactivas', ['uses' => 'ReservasController@get_reservas_inactivas']);
 
+$router->get('canchasMasReservadas', ['uses' => 'ReservasController@get_canchas_mas_reservadas']);
 
 //LOGIN
 $router->post('/login', 'JwtAuthController@Login');
