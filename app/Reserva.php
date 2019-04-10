@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
+
 class Reserva extends Model implements AuthenticatableContract, AuthorizableContract
 {
     
@@ -36,7 +37,6 @@ class Reserva extends Model implements AuthenticatableContract, AuthorizableCont
         return $this->belongsTo(Establecimiento::class);
 
     }
-
 
     //Una reserva pertenece a un usuario
     public function usuario()

@@ -5,6 +5,7 @@ use App\usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\DB;
 class UsuarioController extends Controller
 {
 	 //metodo listar todas los usuarios
@@ -57,4 +58,16 @@ class UsuarioController extends Controller
         $usuario->update($request->all());
         return response()->json($usuario, 200);
      }
+
+
+     function usuarios_mas_frecuentes(){
+            
+
+
+
+     }
+
+
+
+
 }

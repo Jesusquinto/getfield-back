@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Reserva;
 use App\usuario;
 use App\Cancha;
+use App\Establecimiento;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Http\Controllers\EstablecimientoController;
@@ -61,32 +62,120 @@ class ReservasController extends Controller
      }
 
 
-
-     function get_canchas_mas_reservadas(){
-
-      $canchas = DB::select("SELECT * ,COUNT( * ) AS veces
-		FROM reservas 
-		GROUP BY cancha_id
-		HAVING veces = ( 
-		SELECT COUNT( * ) maximo
-		FROM reservas
-		GROUP BY cancha_id
-		ORDER BY maximo DESC 
-		LIMIT 1 )")->get();
-      DD($canchas);
-     return response()->json($canchas);
+     //---@@metodo listar rerservas -------------------
+     function get_reservas_by_establecimiento($establecimiento_id)
+     {
+      $reservas = Reserva::with(['usuario', 'cancha', 'establecimiento'])->where('establecimiento_id', $establecimiento_id)->get();
+      return response()->json($reservas);
+     }
 
 
+
+     //---@@metodo listar canchas mas reservadas activas -------------------
+    function get_canchas_mas_reservadas(){
+      $canchas = Reserva::with(['cancha','Establecimiento'])->select(DB::raw('reservas.cancha_id, canchas.establecimiento_id, count(*) as vecesReservada'))->join('canchas', 'reservas.cancha_id', '=', 'canchas.id')->where('reservas.estado','A')->groupBy('cancha_id')->orderBy('vecesReservada','desc')->get();
+      return response()->json($canchas);
+     }
+
+
+
+
+     //---@@metodo listar usuarios mas frecuentes -------------------
+     function get_usuarios_mas_frecuentes(){
+      $usuarios = Reserva::with(['usuario'])->select(DB::raw('usuario_id,count(*) as vecesQueReserva'))->groupBy('usuario_id')->orderBy('vecesQueReserva','desc')->get();
+      return response()->json($usuarios);
+     }
+
+
+     function cancelar_reserva_admin(request $request){
+      $reserva= Reserva::find($request->id);
+      $reserva->estado = 'CAA';
+      $reserva->fecha_cancelada = new \Carbon\Carbon();;
+      $reserva->save();
+      return response()->json([
+         'success' => [
+            'title'=> 'Genial!',
+             'code' => 200,
+             'message' => "Reserva cancelada correctamente",
+         ]
+         ], 200); 
+     }
+
+
+
+
+
+
+     function cancelar_reserva(request $request){
+      if($request->estado == 'A'){
+         $horainicial = new \Carbon\Carbon($request->horario['horainicial']);
+         //Horario actual del servidor
+         $horaactual = new \Carbon\Carbon();
+         //Agregarle 2 horas a la fecha actual
+         $horaactual->addHours(2);
+         //VALIDACION: solo cancelar reservas con 2 horas de anticipacion
+         if($horainicial->lt($horaactual)) {
+            return response()->json([
+               'error' => [
+                  'title'=> 'Tiempo de anticipacion',
+                   'code' => 400,
+                   'message' => "Solo puede cancelar reservaciones 2 horas antes del inicio",
+               ]
+               ], 400);
+         }
+         $reserva= Reserva::find($request->id);
+         $reserva->estado = 'CA';
+         $reserva->fecha_cancelada = new \Carbon\Carbon();
+         $reserva->save();
+         return response()->json([
+            'success' => [
+               'title'=> 'Genial!',
+                'code' =>200,
+                'message' => "Reserva cancelada con exito",
+            ]
+            ], 200);
+      }else{
+         return response()->json([
+            'error' => [
+               'title'=> 'Error',
+                'code' => 400,
+                'message' => "Solo pueden cancelar reservaciones activas",
+            ]
+            ], 400);
+      }
 
      }
+
+
+
+     function editar_reserva(request $request){
+      $reserva= Reserva::find($request->id);
+      $reserva->estado = $request->estado;
+      $reserva->horario = json_encode($request->horario);
+      $reserva->metodo_pago = $request->metodo_pago;
+      $reserva->valor_a_pagar = $request->valor_a_pagar;
+      $reserva->save();
+      return response()->json([
+         'success' => [
+            'title'=> 'success',
+             'code' => 200,
+             'message' => "Datos actualizados correctamente",
+         ]
+         ], 200);
+     }
+
+
+
+
+
+
+
 
 
 
      //---@@metodo crear reserva (validacion de fechas)-------------------
      function crear_reserva(Request $request)
      {
-
-
 
       //Hora inicial y final del cliente
       $horainicial = new \Carbon\Carbon($request->horario['horainicial']);
@@ -197,6 +286,7 @@ class ReservasController extends Controller
            
             $reservar = Reserva::create([
                'usuario_id' => $data['usuario_id'],
+               'establecimiento_id' => $data['establecimiento_id'],
                'cancha_id' => $data['cancha_id'],
                'horario' => json_encode($data['horario']),
                'estado' => 'A',
@@ -204,7 +294,13 @@ class ReservasController extends Controller
                'valor_a_pagar' => $data['valor_a_pagar']
             ]);
 
-     	      return response()->json($reservar, 201);
+            return response()->json([
+               'success' => [
+                  'title'=> 'Genial',
+                   'code' => 201,
+                   'message' => "Reservación creada con exito!",
+               ]
+               ], 201);
 
 
       }else{
