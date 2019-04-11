@@ -18,7 +18,7 @@ class Reserva extends Model implements AuthenticatableContract, AuthorizableCont
     use Authenticatable, Authorizable;
 
     protected $fillable = [
-        'usuario_id','cancha_id','establecimiento_id','horario','estado','metodo_pago','valor_a_pagar'
+        'usuario_id','cancha_id','establecimiento_id','horario','estado','metodo_pago','valor_a_pagar','estado_pago','parametros'
             ];
     protected $hidden = [
 

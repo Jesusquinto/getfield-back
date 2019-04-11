@@ -3,19 +3,18 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->get('saludo', function(){
-	return response()->json();
-});
-//$router->get('productos',  [ 'uses' => 'ProductosController@get_productos']);
+
 
 //@get usuarios
-//$router->get('usuarios',  [ 'uses' => 'UsuarioController@get_usuarios']);
+$router->get('usuarios',  [ 'uses' => 'UsuarioController@get_usuarios']);
 //@get usuarios
 $router->get('usuarios/{id}',  [ 'uses' => 'UsuarioController@get_usuario_by_id']);
 //@post usuarios
-$router->post('usuarios',  [ 'uses' => 'UsuarioController@crear_usuario']);
+$router->post('crearusuarios',  [ 'uses' => 'UsuarioController@crear_usuario']);
 //@put usuarios
-$router->put('usuarios/{id}',  [ 'uses' => 'UsuarioController@actualizar_usuario']);
+$router->put('actualizarusuario',  [ 'uses' => 'UsuarioController@actualizar_usuario']);
+//@put usuarios admin
+$router->post('actualizarusuarioadmin', ['uses' => 'UsuarioController@actualizar_usuario_admin']);
 
 
 
@@ -40,8 +39,11 @@ $router->get('canchas/{id}',  [ 'uses' => 'CanchasController@get_cancha_by_id'])
 //@get canchas por id establecimiento
 $router->get('canchasEstablecimiento/{establecimiento_id}', ['uses' => 'CanchasController@get_canchas_by_establecimiento']);
 
+
+//@post actualizar canchas
+$router->put('canchas',['uses' => 'CanchasController@actualizar_cancha']);
 //@post canchas 
-$router->post('canchas',  [ 'uses' => 'CanchasController@create_cancha']);
+$router->post('canchas',  [ 'uses' => 'CanchasController@crear_cancha']);
 
 
 
@@ -67,7 +69,7 @@ $router->get('usuariosMasFrecuentes', ['uses' => 'ReservasController@get_usuario
 //@get usuarios mas frecuentes
 $router->get('ReservasEstablecimiento/{establecimiento_id}', ['uses' => 'ReservasController@get_reservas_by_establecimiento']); 
 
-//@crear reserva
+//@crear reserva admin
 $router->post('reservas',  [ 'uses' => 'ReservasController@crear_reserva']);
 //@cancelar reserva
 $router->post('cancelarreserva',  [ 'uses' => 'ReservasController@cancelar_reserva']);
@@ -75,7 +77,8 @@ $router->post('cancelarreserva',  [ 'uses' => 'ReservasController@cancelar_reser
 $router->post('cancelarreservaadmin',  [ 'uses' => 'ReservasController@cancelar_reserva_admin']);
 //@editar reserva
 $router->post('editarreserva', ['uses' => 'ReservasController@editar_reserva']);
-
+//@crear reserva usuario logueado
+$router->post('reservar', ['uses' => 'ReservasController@crear_reserva_usuario_logueado']);
 
 
 

@@ -30,7 +30,9 @@ class UsuarioController extends Controller
 
      //medoto crear usuario----------------------------------
      function crear_usuario(Request $request){
-        $data = $request->json()->all();
+
+        $data = $request->json();
+        return $data;
         $usuario = usuario::create([
            'nombre' => $data['nombre'],
            'apellido' => $data['apellido'],
@@ -43,7 +45,24 @@ class UsuarioController extends Controller
      }
    //--------------------------------------
 
-
+      //medoto actualizar usuario logueado
+    function actualizar_usuario(Request $request){
+      $user = JWTAuth::parseToken()->authenticate();
+      $usuario= Usuario::find($user->id);
+      $usuario->nombre = $request->nombre;
+      $usuario->apellido =  $request->apellido;
+      $usuario->usuario = $request->usuario;
+      $usuario->password = Hash::make( $request->password); 
+      $usuario->save();
+      return response()->json([
+         'success' => [
+            'title'=> 'Genial!',
+             'code' => 200,
+             'message' => "Datos actualizados correctamente",
+         ]
+         ], 200);
+   
+     }
      
 
 
@@ -52,11 +71,22 @@ class UsuarioController extends Controller
 
 
 
-     //medoto actualizar usuario
-     function actualizar_usuario($id, Request $request){
-        $usuario = usuario::findOrFail($id);
-        $usuario->update($request->all());
-        return response()->json($usuario, 200);
+    //medoto actualizar usuario admin
+    function actualizar_usuario_admin(Request $request){
+      $usuario= Usuario::find($request->id);
+      $usuario->nombre = $request->nombre;
+      $usuario->apellido =  $request->apellido;
+      $usuario->usuario = $request->usuario;
+      $usuario->password = $request->password; 
+      $usuario->save();
+      return response()->json([
+         'success' => [
+            'title'=> 'success',
+             'code' => 200,
+             'message' => "Datos actualizados correctamente",
+         ]
+         ], 200);
+   
      }
 
 

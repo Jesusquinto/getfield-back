@@ -17,10 +17,10 @@ class Establecimiento extends Model implements AuthenticatableContract, Authoriz
     use Authenticatable, Authorizable;
 
     protected $fillable = [
-      'id', 'nombre','descripcion','estado','horario','user','password','valoracion', "fecha_creacion"
+      'id', 'nombre','descripcion','estado','horario','user','password','lat','lng','logo_img','valoracion'
             ];
     protected $hidden = [
-        'password','user',"fecha_creacion"
+        'password','user'
     ];
     //Un establecimiento tiene muchas canchas
     public function canchas()

@@ -15,7 +15,7 @@ class Cancha extends Model implements AuthenticatableContract, AuthorizableContr
     use Authenticatable, Authorizable;
 
     protected $fillable = [
-        'id','establecimiento_id','dimensiones','nombre','imagen','descripcion','estado','parametros','valor_x_minuto'
+        'id','establecimiento_id','dimensiones','nombre','imagen','descripcion','estado','parametros'
             ];
     protected $hidden = [
     ];

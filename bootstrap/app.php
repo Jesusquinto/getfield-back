@@ -25,10 +25,17 @@ $app = new Laravel\Lumen\Application(
  $app->withFacades();
 
  $app->withEloquent();
+
+ $app->withFacades(
+     true,
+      [Intervention\Image\Facades\Image::class => 'Image']
+ );
  $app->withFacades(
     true,
     [Laravel\Socialite\Facades\Socialite::class => 'Socialite']
 );
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -88,6 +95,7 @@ $app->routeMiddleware([
 |
 */
 $app->register(Laravel\Socialite\SocialiteServiceProvider::class);
+$app->register(Intervention\Image\ImageServiceProvider::class);
 
 
 $app->register(App\Providers\AppServiceProvider::class);
