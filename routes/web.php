@@ -45,6 +45,7 @@ $router->put('canchas',['uses' => 'CanchasController@actualizar_cancha']);
 //@post canchas 
 $router->post('canchas',  [ 'uses' => 'CanchasController@crear_cancha']);
 
+$router->post('canchascercanas', ['uses' => 'CanchasController@get_canchas_location']);
 
 
 
@@ -87,7 +88,7 @@ $router->post('reservar', ['uses' => 'ReservasController@crear_reserva_usuario_l
 
 
 
-
+$router->get('/canchasdestacadas', 'CanchasDestacadasController@get_canchasDestacadas');
 
 //LOGIN
 $router->post('/login', 'JwtAuthController@Login');
@@ -95,11 +96,11 @@ $router->post('/login', 'JwtAuthController@Login');
 
 $router->group(['middleware'=>'auth:api'],function($router){
     $router->get('usuario',  [ 'uses' => 'UsuarioController@get_usuario']);
-    
+    //@Obtener reservas del usuario logueado
+    $router->get('reservasuser', ['uses' => 'ReservasController@get_reservas_usuario']);
 
 
 });
 
 
 $router->post('googlesingup', 'googleAuthController@googleSingUp');
-$router->post('googlesingin', 'googleAuthController@googleSingIn');

@@ -35,6 +35,8 @@ class JwtAuthController extends Controller
 
     public function Login(Request $request)
     {
+
+
         $this->validate($request, [
             'email'    => 'required|email|max:255',
             'password' => 'required',
@@ -45,7 +47,7 @@ class JwtAuthController extends Controller
         );
         //Try catch
         try { 
-            if (! Auth::attempt($user)){
+            if (!Auth::attempt($user)){
                 return response()->json(['user_not_found'], 404);
             }else{
                 $user = usuario::where('email',$request['email'])->first();
@@ -53,8 +55,7 @@ class JwtAuthController extends Controller
             if (!$token = $this->jwt->fromUser($user)) {
                  return response()->json(['user_not_found'], 404);
              } 
-             echo $token;                
-          
+           
             
 
         } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {

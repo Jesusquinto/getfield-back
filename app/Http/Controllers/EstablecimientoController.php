@@ -66,8 +66,6 @@ class EstablecimientoController extends Controller
             'logo_img' => $url,
             'estado' => 'A',
             'horario' => $request->horario,
-            'user' => $request->user,
-            'password' => Hash::make( $request->password),
             'lat' => $request->latitud,
             'lng' => $request->longitud,
             'valoracion' => 10
@@ -88,8 +86,6 @@ class EstablecimientoController extends Controller
       $reserva->descripcion =  $request->descripcion;
       $reserva->estado = $request->estado;
       $reserva->horario = $request->horario;
-      $reserva->user = $request->user;
-      $reserva->password = Hash::make( $request->password);
       $reserva->lat = $request->lat;
       $reserva->lng = $request->lng;
       $reserva->valoracion = $request->valoracion;

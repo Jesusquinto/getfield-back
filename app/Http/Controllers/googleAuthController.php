@@ -48,42 +48,23 @@ class googleAuthController extends Controller
      *
      * @return JsonResponse
      */
-    public function googleSingIn(Request $request)
-    {
-        $driver = Socialite::driver('google'); 
-        $socialUser = $driver->userFromToken($request->accessToken);
-        if(!$user = usuario::where('email',$socialUser->email)->first()){
-            return response()->json([
-                'error' => [
-                   'title'=> 'No se pudo iniciar sesion',
-                    'code' => 400,
-                    'message' => "La cuenta google con la que intentas ingresar, no esta registrada",
-                ]
-                ], 400);
-        }
-    
-        return response()->json(['token' => $this->createToken($socialUser->email)->original,'success' => [
-            'title'=> 'Genial!',
-             'code' => 201,
-             'message' => "Bienvenid@ ".$request->givenName,
-         ]
-         ], 201);
-
- }
+   
     
     public function googleSingUp(Request $request){
         $driver = Socialite::driver('google'); 
         $socialUser = $driver->userFromToken($request->accessToken);
+        //Iniciar session
         if($user = usuario::where('email',$socialUser->email)->first()){
-            return response()->json([
-                'error' => [
-                   'title'=> 'No se pudo registrar la cuenta',
-                    'code' => 400,
-                    'message' => "La cuenta google con la que intentas registrate, ya está en uso",
-                    'note' => 'Por favor, inicia sesión'
-                ]
-                ], 400);  
+        //Retornar info
+            return response()->json([ 'token' => $this->createToken($socialUser->email)->original['token'],'success' => [
+                'title'=> 'Genial!',
+                 'code' => 201,
+                 'message' => "Bienvenid@ ".$socialUser->user['given_name'],
+             ]
+             ], 201);
+            
         }else{
+            //Registar usuario
             $nickname = explode('@', $socialUser->email);
             $usuario = usuario::create([
                 'nombre' => $socialUser->user['given_name'],
@@ -92,9 +73,15 @@ class googleAuthController extends Controller
                 'estado' => 'A',
                 'email' => $socialUser->user['email'],
                 'imagen' => $socialUser->user['picture'],
-                'rol_id' => '3'
+                'rol_id' => 3,
              ]);
-            return $this->createToken($socialUser->email);
+            //Retornar info
+            return response()->json([ 'token' => $this->createToken($socialUser->email)->original['token'],'success' => [
+                'title'=> 'Genial!',
+                 'code' => 201,
+                 'message' => "Bienvenid@ ".$socialUser->user['given_name'],
+             ]
+             ], 201);
         }
     }
 

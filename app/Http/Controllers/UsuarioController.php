@@ -31,14 +31,15 @@ class UsuarioController extends Controller
      //medoto crear usuario----------------------------------
      function crear_usuario(Request $request){
 
-        $data = $request->json();
-        return $data;
+        $data = $request;
+        
         $usuario = usuario::create([
            'nombre' => $data['nombre'],
            'apellido' => $data['apellido'],
            'usuario' => $data['usuario'],
            'estado' => 'A',
            'email' => $data['email'],
+           'rol_id' => 3,
            'password' =>Hash::make( $data['password'])
         ]);
           return response()->json($usuario, 201);

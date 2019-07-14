@@ -27,6 +27,12 @@ class Cancha extends Model implements AuthenticatableContract, AuthorizableContr
     	return $this->belongsTo(Establecimiento::class);
     }
 
+    //Una cancha pertenece a una cancha destacada
+    public function canchas_destacadas()
+    {
+    	return $this->belongsTo(CanchasDestacadas::class, 'id');
+    }
+
 
     //Una cancha tiene varias reservas
     public function reserva()
