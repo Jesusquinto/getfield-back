@@ -177,6 +177,54 @@ class CanchasController extends Controller
                      HAVING distancia  < ' . $distance . '                                       
                      ORDER BY distancia ASC');
 
+                     foreach($stmt as $c){
+                        $c->parametros = json_decode($c->parametros);
+                        $c->imagen = json_decode($c->imagen);
+                        if($c->parametros->descuento != null){
+                           $c->parametros->precio = $c->parametros->valorhora - (($c->parametros->valorhora * $c->parametros->descuento) /100);
+                        }else{
+                           $c->parametros->precio = $c->parametros->valorhora;
+                        }
+
+                        $c->distancia = number_format($c->distancia, 2, '.', "");
+                        if($c->distancia < 1){
+                           $c->distanciatipo = 'm';
+                           $c->distancia = $c->distancia * 1000;
+                        }else{
+                           $c->distanciatipo = 'km';
+                        }
+
+                        $c->horarioEstablecimiento = json_decode($c->horarioEstablecimiento);
+                        $currentDate = getdate();
+                        $weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                        $day = $weekdays[$currentDate['wday']];
+                        $hour;
+                        if($currentDate['hours'] < 10){
+                           $hour = '0'.$currentDate['hours'].':'.$currentDate['minutes'].':00';
+                        }else{
+                           $hour = $currentDate['hours'].':'.$currentDate['minutes'].':00';
+                        }
+                        $horai = $c->horarioEstablecimiento->horarios->horainicial.':00';
+                        $horaf = $c->horarioEstablecimiento->horarios->horafinal.':00';
+                        $open = false;
+
+                        foreach($c->horarioEstablecimiento->dias as $d){
+                           if($day == $d){
+                              $open = false;
+                           }
+                        }
+                        if($open != false){
+                           if($hour >= $horai && $hour <= $horaf){
+                              $c->abierto = true;
+                           }else{
+                              $c->abierto = false;
+                           }
+                        }else{
+                           $c->abierto = false;
+                        }
+
+                     }
+
        return response()->json($stmt);
 
 

@@ -25,7 +25,26 @@ class ReservasController extends Controller
 
      function get_reservas_usuario(){
       $user = JWTAuth::parseToken()->authenticate(); 
-      $reservas = Reserva::with(['cancha','establecimiento'])->where('usuario_id', $user->id)->get();
+      $reservas = Reserva::with(['establecimiento'])->where('usuario_id', $user->id)->get();
+
+      foreach($reservas as $r){
+         $cancha = Cancha::where('id',$r->cancha_id)->first();
+         $r->cancha = $cancha;
+         $r->cancha->parametros = json_decode( $r->cancha->parametros);
+         $r->cancha->imagen = json_decode( $r->cancha->imagen);
+         $r->horario = json_decode($r->horario);
+         $days = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'];
+         $d1 = getDate(strtotime($r->horario->horainicial));
+         $dayName = $days[$d1['wday']];
+         $hours1 = str_pad($d1['hours'], 2,"0");
+         $minutes1 = str_pad($d1['minutes'], 2,"0");
+         $d2 = getDate(strtotime($r->horario->horafinal));
+         $hours2 = str_pad($d2['hours'], 2,"0");
+         $minutes2 = str_pad($d2['minutes'], 2,"0");
+
+         $r->horariotexto = $dayName.'. '.$hours1.':'.$minutes1.' - '.$hours2.':'.$minutes2;
+         $r->parametros = json_decode($r->parametros);
+      }
       return response()->json($reservas);   
 
      }
@@ -34,7 +53,26 @@ class ReservasController extends Controller
 
      function get_reservas()
      {
-     	$reservas = Reserva::with(['cancha','usuario'])->get();
+        $reservas = Reserva::with(['usuario'])->get();
+        foreach($reservas as $r){
+         $cancha = Cancha::where('id',$r->cancha_id)->first();
+         $r->cancha = $cancha;
+         $r->cancha->parametros = json_decode( $r->cancha->parametros);
+         $r->cancha->imagen = json_decode( $r->cancha->imagen);
+         $r->horario = json_decode($r->horario);
+         $days = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'];
+         $d1 = getDate(strtotime($r->horario->horainicial));
+         $dayName = $days[$d1['wday']];
+         $hours1 = str_pad($d1['hours'], 2,"0");
+         $minutes1 = str_pad($d1['minutes'], 2,"0");
+         $d2 = getDate(strtotime($r->horario->horafinal));
+         $hours2 = str_pad($d2['hours'], 2,"0");
+         $minutes2 = str_pad($d2['minutes'], 2,"0");
+
+         $r->horariotexto = $dayName.'. '.$hours1.':'.$minutes1.' - '.$hours2.':'.$minutes2;
+         $r->parametros = json_decode($r->parametros);
+      }
+
      	return response()->json($reservas);
      }
 

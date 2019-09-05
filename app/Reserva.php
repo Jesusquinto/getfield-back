@@ -23,6 +23,7 @@ class Reserva extends Model implements AuthenticatableContract, AuthorizableCont
     protected $hidden = [
 
     ];
+   
 
    //Una reserva pertenece a una cancha
     public function cancha()
